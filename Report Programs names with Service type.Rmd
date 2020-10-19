@@ -1,0 +1,42 @@
+---
+title: "Report: Program Names with service type list"
+output: html_notebook
+---
+
+#loading the Program and service type sheet
+
+
+```{r}
+library(readxl)
+Programs_and_Service_Types_with_IDs <- read_excel("C:/Users/Madhuri/Downloads/Programs and Service Types with IDs.xlsx")
+View(Programs_and_Service_Types_with_IDs)
+
+```
+
+
+```{r}
+names(Programs_and_Service_Types_with_IDs)
+```
+#Report 1: Program Names with Service type
+
+```{r}
+library(dplyr)
+Program_with_Service_Type<-Programs_and_Service_Types_with_IDs %>%
+   group_by(ProgramID,ProgramName) %>%
+   summarise(ServiceTypeID= paste(ServiceTypeID, collapse = ";") , ServiceType = paste(ServiceType, collapse = ";"))
+ 
+ View(Program_with_Service_Type)
+
+```
+
+#Report 2: Service type with Program Name list 
+
+```{r}
+library(dplyr)
+Service_Type_with_Program_Name<-Programs_and_Service_Types_with_IDs %>%
+   group_by(ServiceTypeID,ServiceType) %>%
+   summarise(ProgramID= paste(ProgramID, collapse = ";") , ProgramName = paste(ProgramName, collapse = ";"))
+ 
+ View(Service_Type_with_Program_Name)
+```
+
