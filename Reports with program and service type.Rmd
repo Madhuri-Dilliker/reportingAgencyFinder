@@ -1,0 +1,60 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+#loading the library
+
+```{r}
+library(readxl)
+library(dplyr)
+```
+
+#loading and viewing the "Program with service types updated" sheet
+
+```{r}
+Program_with_Service_Types_updated <- read_excel("Data/Program_with _Service_Types_updated.xlsx")
+View(Program_with_Service_Types_updated)
+
+```
+
+#names of column present in "Program_with_service_types_updated" dataframe
+
+
+```{r}
+names(Program_with_Service_Types_updated) 
+
+```
+#creating a report 1 with Program Id, Program Name, Service Id and Service type and grouping this using Program Id and Program Name resulting in list of Service Id and Service Type which are related to program.
+
+```{r}
+
+Program_with_Service_Type<-Program_with_Service_Types_updated %>%
+   group_by(ProgramID,ProgramName) %>%
+   summarise(ServiceTypeID= paste(ServiceTypeID, collapse = " ; ") , ServiceType = paste(ServiceType, collapse = " ; "))
+ 
+ View(Program_with_Service_Type)
+
+
+
+```
+#creating a report 2 with Program Id, Program Name, Service Id and Service type and grouping this using Service Id and Service Type resulting in list of Program Id  and Program Name which are related to program.
+
+
+```{r}
+Service_Type_with_Program_Name<-Program_with_Service_Types_updated %>%
+   group_by(ServiceTypeID,ServiceType) %>%
+   summarise(ProgramID= paste(ProgramID, collapse = " ; ") , ProgramName = paste(ProgramName, collapse = " ; "))
+ 
+ View(Service_Type_with_Program_Name)
+```
+
+#exporting the data present in "Program_with_Service_Type" and "Service_Type_with_Program_Name" dataframe.
+
+```{r}
+write.csv(Program_with_Service_Type,"Data/Programs_with_service_type.csv",row.names = FALSE)
+write.csv(Service_Type_with_Program_Name,"Data/Service_type_with_program_name.csv",row.names = FALSE)
+
+
+```
+
